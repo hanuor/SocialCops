@@ -48,7 +48,6 @@ public class Frag2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag2_fragmet,container,false);
-        Button button = (Button) v.findViewById(R.id.button);
         imageDir = new File(Environment.getExternalStorageDirectory().toString()+
                 "/socialCopsDemo");
         mediaFiles = imageDir.listFiles();
