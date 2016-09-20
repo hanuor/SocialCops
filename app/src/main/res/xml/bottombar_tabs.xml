@@ -3,15 +3,15 @@
         id="@+id/tab_favorites"
         icon="@drawable/heart"
         title="Favorites"
-        barColorWhenSelected="#5D4037"/>
+        barColorWhenSelected="#ffffff"/>
     <tab
         id="@+id/tab_nearby"
         icon="@drawable/heart"
-        barColorWhenSelected="#ff00ff"
+        barColorWhenSelected="#0D47A1"
         title="Nearby" />
     <tab
         id="@+id/tab_friends"
         icon="@drawable/heart"
-        barColorWhenSelected="#990000"
+        barColorWhenSelected="#BF360C"
         title="Friends" />
 </tabs>
