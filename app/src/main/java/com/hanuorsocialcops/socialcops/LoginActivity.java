@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
                 , LoginActivity.this).build();
         setContentView(R.layout.loginscreen);
-       // kbv = (KenBurnsView) findViewById(R.id.kbv);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/dejavu.ttf");
         final TextView myTextView = (TextView)findViewById(R.id.tv);
         signUp = (TextView) findViewById(R.id.signup);
