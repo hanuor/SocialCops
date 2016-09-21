@@ -40,15 +40,11 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     boolean previewing = false;
-    FrameLayout frameLayout;
     Camera.PictureCallback rawCallback;
     Camera.ShutterCallback shutterCallback;
     Camera.PictureCallback jpegCallback;
     MediaRecorder mediaRecorder;
     boolean recording;
-
-    String stringPath = "/sdcard/socialcops.jpg";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +58,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         recording = false;
         mediaRecorder = new MediaRecorder();
         mediaRecoderSettings();
-       // frameLayout = (FrameLayout) v.findViewById(R.id.defView);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -81,24 +76,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         };
         jpegCallback = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera camera) {
-                FileOutputStream outStream = null;
                 try {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                     SaveImage(bitmap);
-                  /*  outStream = new FileOutputStream(String.format(
-                            "/sdcard/%d.jpg", System.currentTimeMillis()));
-                    outStream.write(data);
-                    outStream.close();
-                  */
-                    Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
-               /* } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*//* finally {
-                }
-                Log.d("Log", "onPictureTaken - jpeg");
-            }*/
                 } catch (Exception e) {
 
                 }

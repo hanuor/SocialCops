@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import com.hanuorsocialcops.socialcops.CameraUtils.CameraFragment;
 import com.hanuorsocialcops.socialcops.CameraUtils.Frag2;
 import com.hanuorsocialcops.socialcops.Credentials.CredentialManager;
 import com.kinvey.android.Client;
+import com.kinvey.android.callback.KinveyUserCallback;
+import com.kinvey.java.User;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -24,13 +27,16 @@ public class MainActivity extends AppCompatActivity {
     //CameraDetails cameraDetails;
    /* private MainActivity(){
      //   cameraDetails = new CameraDetails();
-        final Client mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
-                , this.getApplicationContext()).build();
+
     }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Client mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
+                , this.getApplicationContext()).build();
+        Log.d("han","ss");
+
         setContentView(R.layout.activity_main);
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
