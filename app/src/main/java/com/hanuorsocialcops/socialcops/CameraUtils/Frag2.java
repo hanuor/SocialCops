@@ -31,6 +31,9 @@ import java.util.ArrayList;
  * Created by Shantanu Johri on 9/20/2016.
  */
 
+//for videos
+    //Bitmap bMap = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Video.Thumbnails.MICRO_KIND);
+//use hashmap
 public class Frag2 extends Fragment {
     String SCAN_PATH;
     File[] allFiles ;
