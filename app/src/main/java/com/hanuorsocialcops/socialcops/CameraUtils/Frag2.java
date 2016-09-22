@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanuorsocialcops.socialcops.Credentials.CredentialManager;
@@ -53,16 +55,17 @@ public class Frag2 extends Fragment {
     File imageDir;
     static GridView gridView;
     ImageAdapter adapter;
-    Intent in;
-    ImageButton btncam;
-    String name = null;
-    ArrayList<Bitmap> bmpArray = new ArrayList<Bitmap>();
+    TextView toolbarT;
     ArrayList<String> fileP = new ArrayList<String>();
     public static final String TAG = "Album3Activity";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag2_fragmet,container,false);
+        toolbarT = (TextView) v.findViewById(R.id.toolbarText);
+        toolbarT.setTextSize(25);
+        //Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/dejavu.ttf");
+        //toolbarT.setTypeface(myTypeface);
         imageDir = new File(Environment.getExternalStorageDirectory().toString()+
                 "/socialCopsDemo");
         mediaFiles = imageDir.listFiles();
