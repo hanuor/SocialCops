@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("han","ss");
 
         setContentView(R.layout.activity_main);
+        setTheme(R.style.MainActivityTheme);
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
