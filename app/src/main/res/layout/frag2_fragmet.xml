@@ -2,13 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:text="Frag2"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-    <GridView android:id="@+id/gridview"
+        android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar_layout"
+        ></include>
+    <GridView
+        android:layout_below="@+id/tool_bar"
+        android:id="@+id/gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnWidth="90dp"
@@ -18,4 +22,5 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         />
+    </RelativeLayout>
 </LinearLayout>
