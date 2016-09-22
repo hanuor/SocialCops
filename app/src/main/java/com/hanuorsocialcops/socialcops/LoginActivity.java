@@ -64,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onSuccess(User user) {
+                
+                //get active uesr id and put it in the event bus!!!
                 Intent newIn = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(newIn);
 
