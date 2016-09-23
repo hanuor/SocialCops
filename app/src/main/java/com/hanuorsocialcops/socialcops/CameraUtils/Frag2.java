@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.hanuorsocialcops.socialcops.Credentials.CredentialManager;
 import com.hanuorsocialcops.socialcops.R;
+import com.hanuorsocialcops.socialcops.Utils.InformationHandler;
 import com.kinvey.android.Client;
 import com.kinvey.java.core.MediaHttpUploader;
 import com.kinvey.java.core.UploaderProgressListener;
@@ -42,6 +44,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Shantanu Johri on 9/20/2016.
@@ -57,12 +61,18 @@ public class Frag2 extends Fragment {
     ImageAdapter adapter;
     TextView toolbarT;
     ArrayList<String> fileP = new ArrayList<String>();
-    public static final String TAG = "Album3Activity";
+    private InformationHandler stickyEvent;
+    private String username = null;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag2_fragmet,container,false);
-        toolbarT = (TextView) v.findViewById(R.id.toolbarText);
+        stickyEvent = EventBus.getDefault().getStickyEvent(InformationHandler.class);
+        if(stickyEvent != null) {
+            username = stickyEvent.getKEYID();
+            Toast.makeText(getActivity(), ""+username, Toast.LENGTH_SHORT).show();
+            }
+                  toolbarT = (TextView) v.findViewById(R.id.toolbarText);
         toolbarT.setTextSize(25);
         //Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/dejavu.ttf");
         //toolbarT.setTypeface(myTypeface);

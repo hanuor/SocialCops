@@ -19,13 +19,13 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.flaviofaria.kenburnsview.KenBurnsView;
-import com.flaviofaria.kenburnsview.RandomTransitionGenerator;
 import com.hanuorsocialcops.socialcops.Credentials.CredentialManager;
+import com.hanuorsocialcops.socialcops.Utils.InformationHandler;
 import com.kinvey.android.Client;
 import com.kinvey.android.callback.KinveyUserCallback;
 import com.kinvey.java.User;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Shantanu Johri on 9/21/2016.
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     RelativeLayout accounnt_buttons;
     TextInputLayout til, tpl;
     Button login, signUp;
+    private static EventBus bus = EventBus.getDefault();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +65,9 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onSuccess(User user) {
-                
+
                 //get active uesr id and put it in the event bus!!!
+                bus.postSticky(new InformationHandler(user.getUsername()));
                 Intent newIn = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(newIn);
 

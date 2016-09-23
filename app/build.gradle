@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.+'
-    compile 'com.flaviofaria:kenburnsview:1.0.7'
+    compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.android.support:design:24.+'
     compile 'com.roughike:bottom-bar:2.0.2'
 
