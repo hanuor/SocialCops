@@ -71,8 +71,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         mainLayout = (LinearLayout) v.findViewById(R.id.mainLayout);
         ImageView img = (ImageView) v.findViewById(R.id.gifvideo);
 
-        //GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(img);
-        //Glide.with(this).load(R.drawable.aa).into(imageViewTarget);
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(img);
+        Glide.with(this).load(R.drawable.giphy).into(imageViewTarget);
         recording = false;
         mediaRecorder = new MediaRecorder();
         mediaRecoderSettings();
@@ -132,6 +132,18 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                 mainLayout.setVisibility(View.INVISIBLE);
                 afterClick.setVisibility(View.VISIBLE);
                 captureVideo.setVisibility(View.VISIBLE);
+                camera = Camera.open();
+                if (camera != null){
+                    try {
+                        camera.setDisplayOrientation(90);
+                        camera.setPreviewDisplay(surfaceHolder);
+                        camera.startPreview();
+                        previewing = true;
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
             }
         });
         captureVideo.setOnClickListener(new View.OnClickListener() {

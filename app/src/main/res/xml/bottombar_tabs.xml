@@ -1,17 +1,16 @@
 <tabs>
     <tab
         id="@+id/tab_favorites"
-        icon="@drawable/heart"
-        title="Favorites"
+        icon="@drawable/cam"
         barColorWhenSelected="#ffffff"/>
     <tab
         id="@+id/tab_nearby"
-        icon="@drawable/upload"
+        icon="@drawable/cloud"
         barColorWhenSelected="#6f4e37"
-        title="Nearby" />
+        />
     <tab
         id="@+id/tab_friends"
-        icon="@drawable/heart"
+        icon="@drawable/cloud"
         barColorWhenSelected="#BF360C"
-        title="Friends" />
+         />
 </tabs>

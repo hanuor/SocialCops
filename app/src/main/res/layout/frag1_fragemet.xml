@@ -16,13 +16,18 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:background="#212121"
+            android:background="@drawable/sunset"
             android:layout_height="match_parent"
+
             android:id="@+id/imageP"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_bg" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:textColor="#cceeeeee"
             android:layout_centerInParent="true"
             android:text="Snap a shot"/>
     </RelativeLayout>
@@ -36,12 +41,17 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#66ffcc"
+            android:scaleType="fitXY"
+            android:background="#212121"
             android:id="@+id/gifvideo"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_bg" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#212121"
+            android:textColor="#cceeeeee"
             android:layout_centerInParent="true"
             android:text="Snap a video"/>
     </RelativeLayout>
