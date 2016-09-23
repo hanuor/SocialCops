@@ -53,7 +53,14 @@ public class ImageAdapter extends BaseAdapter {
         }
 
 
-        Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inDither = false;
+        options.inJustDecodeBounds = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inSampleSize = 3;
+        options.inPurgeable = true;
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position), options);
         holder.imageview.setImageBitmap(myBitmap);
         return convertView;
     }

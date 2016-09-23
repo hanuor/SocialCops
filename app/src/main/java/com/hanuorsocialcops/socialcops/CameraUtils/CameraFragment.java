@@ -10,6 +10,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -132,39 +136,40 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                 mainLayout.setVisibility(View.INVISIBLE);
                 afterClick.setVisibility(View.VISIBLE);
                 captureVideo.setVisibility(View.VISIBLE);
-                camera = Camera.open();
+                /*camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
                 if (camera != null){
-                    try {
                         camera.setDisplayOrientation(90);
-                        camera.setPreviewDisplay(surfaceHolder);
                         camera.startPreview();
-                        previewing = true;
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
+
+                }*/
             }
         });
         captureVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(recording){
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        captureVideo.setBackground(getActivity().getResources().getDrawable(R.drawable.pause));
-                    }
                     mediaRecorder.stop();
                     mediaRecorder.release();
-                    Log.d("trans","stop");
+                    Log.d("transition","stop");
+
+                    final Animation fadeIn = new AlphaAnimation(0, 1);
+                    fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                    fadeIn.setDuration(2000);
+                    mainLayout.setAnimation(fadeIn);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainLayout.setVisibility(View.VISIBLE);
+                            afterClick.setVisibility(View.INVISIBLE);
+
+                        }
+                    }, 1200);
                     //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
                 }else{
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        captureVideo.setBackground(getActivity().getResources().getDrawable(R.drawable.play));
-                    }
                     mediaRecorder.start();
                     recording = true;
-                    Log.d("trans","start");
+                    Log.d("transition","start");
 
                 }
 
@@ -174,6 +179,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
             @Override
             public void onClick(View v) {
                 camera.takePicture(shutterCallback,rawCallback,jpegCallback);
+
+
             }
         });
 
@@ -215,6 +222,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        final Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+        fadeIn.setDuration(2000);
+        mainLayout.setAnimation(fadeIn);
+        mainLayout.setVisibility(View.VISIBLE);
+        afterClick.setVisibility(View.INVISIBLE);
     }
     private void mediaRecoderSettings(){
         Random generator = new Random();
@@ -222,19 +235,29 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         String root = Environment.getExternalStorageDirectory().toString()+"/socialCopsDemo/";
         n = generator.nextInt(n);
         String fname = "Vid-"+ n;
+
+        camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+        camera.setDisplayOrientation(90);
+        camera.unlock();
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setCamera(camera);
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
         CamcorderProfile camcorderProfile_HQ = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
         mediaRecorder.setProfile(camcorderProfile_HQ);
-
         mediaRecorder.setOutputFile(root+fname+".mp4" );
-        mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
+        Log.d("insom","6");
+                mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
+        Log.d("insom","7");
         mediaRecorder.setMaxFileSize(5000000); // Set max file size 5M
+        Log.d("insom","8");
     }
 
     private void prepareMediaRecorder(){
         mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+        Log.d("insom","9");
         try {
+
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block

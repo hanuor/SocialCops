@@ -82,6 +82,7 @@
         android:layout_height="wrap_content"
         />
 
+
     <SurfaceView
         android:id="@+id/surfaceview"
         android:layout_width="fill_parent"
