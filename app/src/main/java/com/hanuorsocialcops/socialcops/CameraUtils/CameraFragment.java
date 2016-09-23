@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
+import android.media.Image;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,8 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.hanuorsocialcops.socialcops.R;
 
 import java.io.File;
@@ -48,17 +53,26 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     Camera.PictureCallback jpegCallback;
     MediaRecorder mediaRecorder;
     boolean recording;
+    LinearLayout mainLayout;
+    RelativeLayout cameraRel,gify;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag1_fragemet,container,false);
-        final FloatingActionButton buttonStartCameraPreview = (FloatingActionButton) v.findViewById(R.id.startcamerapreview);
-        final FloatingActionButton videoRecorder = (FloatingActionButton) v.findViewById(R.id.videoRecord);
+       // final FloatingActionButton buttonStartCameraPreview = (FloatingActionButton) v.findViewById(R.id.startcamerapreview);
+        //final FloatingActionButton videoRecorder = (FloatingActionButton) v.findViewById(R.id.videoRecord);
         final FloatingActionButton captureImage = (FloatingActionButton) v.findViewById(R.id.captureImage);
         final FloatingActionButton captureVideo = (FloatingActionButton) v.findViewById(R.id.captureVideo);
         getActivity().getWindow().setFormat(PixelFormat.UNKNOWN);
         afterClick = (RelativeLayout) v.findViewById(R.id.afterClick);
         surfaceView = (SurfaceView) v.findViewById(R.id.surfaceview);
+        cameraRel = (RelativeLayout) v.findViewById(R.id.cameraRel);
+        gify = (RelativeLayout)v.findViewById(R.id.gify);
+        mainLayout = (LinearLayout) v.findViewById(R.id.mainLayout);
+        ImageView img = (ImageView) v.findViewById(R.id.gifvideo);
+
+        //GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(img);
+        //Glide.with(this).load(R.drawable.aa).into(imageViewTarget);
         recording = false;
         mediaRecorder = new MediaRecorder();
         mediaRecoderSettings();
@@ -89,15 +103,13 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
             }
         };
 
-        buttonStartCameraPreview.setOnClickListener(new Button.OnClickListener(){
-
+        cameraRel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                mainLayout.setVisibility(View.INVISIBLE);
                 afterClick.setVisibility(View.VISIBLE);
-                buttonStartCameraPreview.setVisibility(GONE);
                 captureImage.setVisibility(View.VISIBLE);
-                videoRecorder.setVisibility(GONE);
+
                 if(!previewing){
                     camera = Camera.open();
                     if (camera != null){
@@ -112,16 +124,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                         }
                     }
                 }
-            }});
-        videoRecorder.setOnClickListener(new View.OnClickListener() {
+            }
+        });
+        gify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               afterClick.setVisibility(View.VISIBLE);
-                buttonStartCameraPreview.setVisibility(GONE);
+                mainLayout.setVisibility(View.INVISIBLE);
+                afterClick.setVisibility(View.VISIBLE);
                 captureVideo.setVisibility(View.VISIBLE);
-                captureImage.setVisibility(GONE);
-             videoRecorder.setVisibility(GONE);
-
             }
         });
         captureVideo.setOnClickListener(new View.OnClickListener() {
@@ -134,24 +144,18 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                     }
                     mediaRecorder.stop();
                     mediaRecorder.release();
-
                     Log.d("trans","stop");
-                  //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
-
-
-
-
-
+                    //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         captureVideo.setBackground(getActivity().getResources().getDrawable(R.drawable.play));
                     }
-
                     mediaRecorder.start();
                     recording = true;
                     Log.d("trans","start");
 
                 }
+
             }
         });
         captureImage.setOnClickListener(new View.OnClickListener() {

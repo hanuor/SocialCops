@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/mainLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        android:background="#212121"
-        android:layout_centerInParent="true">
-
-    <android.support.design.widget.FloatingActionButton
-
-        android:id="@+id/startcamerapreview"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cam"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        />
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="0.7dp"
-    android:id="@+id/lineofSep"
-        android:layout_below="@+id/startcamerapreview"
-    android:background="#ffffff"/>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:id="@+id/cameraRel"
+        android:layout_weight="1">
 
-        android:layout_centerVertical="true"
-        android:id="@+id/videoRecord"
-        android:src="@drawable/vid"
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/lineofSep"
-        android:layout_height="wrap_content"
-        />
+        <ImageView
+            android:layout_width="match_parent"
+            android:background="#212121"
+            android:layout_height="match_parent"
+            android:id="@+id/imageP"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_centerInParent="true"
+            android:text="Snap a shot"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gify"
+        android:clickable="true"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#66ffcc"
+            android:id="@+id/gifvideo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#212121"
+            android:layout_centerInParent="true"
+            android:text="Snap a video"/>
+    </RelativeLayout>
+</LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:visibility="invisible"
@@ -72,6 +79,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-    </RelativeLayout>
-</RelativeLayout>
 
+</RelativeLayout>
+</FrameLayout>
