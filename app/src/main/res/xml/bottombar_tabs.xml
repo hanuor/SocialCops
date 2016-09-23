@@ -6,8 +6,8 @@
         barColorWhenSelected="#ffffff"/>
     <tab
         id="@+id/tab_nearby"
-        icon="@drawable/heart"
-        barColorWhenSelected="#0D47A1"
+        icon="@drawable/upload"
+        barColorWhenSelected="#6f4e37"
         title="Nearby" />
     <tab
         id="@+id/tab_friends"

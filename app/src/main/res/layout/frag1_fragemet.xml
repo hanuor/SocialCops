@@ -4,25 +4,46 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:background="#212121"
+        android:layout_centerInParent="true">
+
     <android.support.design.widget.FloatingActionButton
 
         android:id="@+id/startcamerapreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cam"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         />
-
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="0.7dp"
+    android:id="@+id/lineofSep"
+        android:layout_below="@+id/startcamerapreview"
+    android:background="#ffffff"/>
     <android.support.design.widget.FloatingActionButton
-        android:layout_centerInParent="true"
-        android:layout_marginTop="7dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+
+        android:layout_centerVertical="true"
         android:id="@+id/videoRecord"
         android:src="@drawable/vid"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/startcamerapreview"
+        android:layout_below="@+id/lineofSep"
         android:layout_height="wrap_content"
         />
-
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:id="@+id/afterClick"
+        android:layout_height="match_parent">
     <android.support.design.widget.FloatingActionButton
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
@@ -51,5 +72,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    </RelativeLayout>
 </RelativeLayout>
 

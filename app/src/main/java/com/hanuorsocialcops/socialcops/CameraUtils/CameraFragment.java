@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.hanuorsocialcops.socialcops.R;
 
@@ -36,8 +38,9 @@ import static android.view.View.GONE;
  */
 
 public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
-    Camera camera;
+     Camera camera;
     SurfaceView surfaceView;
+    RelativeLayout afterClick;
     SurfaceHolder surfaceHolder;
     boolean previewing = false;
     Camera.PictureCallback rawCallback;
@@ -54,6 +57,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         final FloatingActionButton captureImage = (FloatingActionButton) v.findViewById(R.id.captureImage);
         final FloatingActionButton captureVideo = (FloatingActionButton) v.findViewById(R.id.captureVideo);
         getActivity().getWindow().setFormat(PixelFormat.UNKNOWN);
+        afterClick = (RelativeLayout) v.findViewById(R.id.afterClick);
         surfaceView = (SurfaceView) v.findViewById(R.id.surfaceview);
         recording = false;
         mediaRecorder = new MediaRecorder();
@@ -90,6 +94,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                afterClick.setVisibility(View.VISIBLE);
                 buttonStartCameraPreview.setVisibility(GONE);
                 captureImage.setVisibility(View.VISIBLE);
                 videoRecorder.setVisibility(GONE);
@@ -111,6 +116,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         videoRecorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               afterClick.setVisibility(View.VISIBLE);
                 buttonStartCameraPreview.setVisibility(GONE);
                 captureVideo.setVisibility(View.VISIBLE);
                 captureImage.setVisibility(GONE);
@@ -122,14 +128,25 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
             @Override
             public void onClick(View v) {
                 if(recording){
-                    videoRecorder.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.pause));
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        captureVideo.setBackground(getActivity().getResources().getDrawable(R.drawable.pause));
+                    }
                     mediaRecorder.stop();
                     mediaRecorder.release();
+
                     Log.d("trans","stop");
+                  //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
+
+
+
 
 
                 }else{
-                    videoRecorder.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.play));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        captureVideo.setBackground(getActivity().getResources().getDrawable(R.drawable.play));
+                    }
+
                     mediaRecorder.start();
                     recording = true;
                     Log.d("trans","start");
@@ -193,7 +210,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
         CamcorderProfile camcorderProfile_HQ = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
         mediaRecorder.setProfile(camcorderProfile_HQ);
-        mediaRecorder.setOrientationHint(90);
+
         mediaRecorder.setOutputFile(root+fname+".mp4" );
         mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(5000000); // Set max file size 5M
