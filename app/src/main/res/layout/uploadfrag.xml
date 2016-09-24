@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/above"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/upText"
+            android:textColor="#bdbdbd"
+            android:text="Uploaded"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="#eeeeee"
+            android:id="@+id/upline"
+            android:layout_below="@+id/upText"
+            android:layout_margin="3dp"/>
+    <GridView
+        android:layout_width="match_parent"
+        android:id="@+id/uploaded"
+        android:layout_below="@+id/upline"
+        android:layout_height="match_parent"></GridView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/below"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/remText"
+            android:textColor="#bdbdbd"
+            android:text="Remaining"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="#eeeeee"
+            android:id="@+id/remline"
+            android:layout_below="@+id/remText"
+            android:layout_margin="3dp"/>
+
+        <GridView
+            android:layout_width="match_parent"
+            android:id="@+id/remaining"
+            android:layout_below="@+id/remline"
+            android:layout_height="match_parent"></GridView>
+    </RelativeLayout>
+</RelativeLayout>

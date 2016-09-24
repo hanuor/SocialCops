@@ -15,4 +15,14 @@
         android:layout_height="wrap_content"
         android:numColumns="3"
         android:scrollbars="none"  />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploadButton"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/cloudstorage"
+        android:layout_margin="7dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
     </RelativeLayout>

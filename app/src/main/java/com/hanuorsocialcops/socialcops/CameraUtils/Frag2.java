@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ActionMode;
@@ -60,7 +61,9 @@ public class Frag2 extends Fragment {
     static GridView gridView;
     ImageAdapter adapter;
     TextView toolbarT;
+    FloatingActionButton uploadButton;
     ArrayList<String> fileP = new ArrayList<String>();
+    ArrayList<String> selectedS = new ArrayList<String>();
     private InformationHandler stickyEvent;
     private String username = null;
     @Nullable
@@ -74,6 +77,7 @@ public class Frag2 extends Fragment {
             }
                   toolbarT = (TextView) v.findViewById(R.id.toolbarText);
         toolbarT.setTextSize(25);
+        uploadButton = (FloatingActionButton) v.findViewById(R.id.uploadButton);
         //Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/dejavu.ttf");
         //toolbarT.setTypeface(myTypeface);
         imageDir = new File(Environment.getExternalStorageDirectory().toString()+
@@ -95,15 +99,20 @@ public class Frag2 extends Fragment {
 
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                         long arg3) {
-                    Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
 
                     int selectedIndex = adapter.selectedPositions.indexOf(position);
                     if (selectedIndex > -1) {
                         adapter.selectedPositions.remove(selectedIndex);
                         ((CustomView)arg1).display(false);
+                       selectedS.remove(fileP.get(position));
                     } else {
+                        uploadButton.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.cloudstorage));
+                        uploadButton.setVisibility(View.VISIBLE);
                         adapter.selectedPositions.add(selectedIndex);
                         ((CustomView)arg1).display(true);
+                        selectedS.add(fileP.get(position));
+                        //selectedS.add((String) arg0.getItemAtPosition(position));
                     }
                 }
             });
@@ -112,6 +121,14 @@ public class Frag2 extends Fragment {
         {
             //   setContentView(R.layout.no_media);
         }
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Selected item/s are being uploaded...", Toast.LENGTH_SHORT).show();
+
+                //  Toast.makeText(getActivity(), ""+selectedS.get(0), Toast.LENGTH_SHORT).show();
+            }
+        });
         return v;
     }
 }
