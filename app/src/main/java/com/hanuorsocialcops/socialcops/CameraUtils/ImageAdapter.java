@@ -67,8 +67,13 @@ public class ImageAdapter extends BaseAdapter {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inSampleSize = 3;
         options.inPurgeable = true;
-
-        Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position), options);
+        Bitmap myBitmap = null;
+        if(f.get(position).contains(".mp4"))
+        {
+            myBitmap = ThumbnailUtils.createVideoThumbnail(f.get(position), 0); //Creation of Thumbnail of video
+        }else{
+            myBitmap = BitmapFactory.decodeFile(f.get(position), options);
+        }
           holder.imageview.setImageBitmap(myBitmap);
         //holder.imageview.setImageBitmap(myBitmap);
         return convertView;
