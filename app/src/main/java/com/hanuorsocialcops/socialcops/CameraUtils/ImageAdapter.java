@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.hanuorsocialcops.socialcops.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.R.attr.path;
 
@@ -26,12 +27,14 @@ import static android.R.attr.path;
 public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     ArrayList<String> f = new ArrayList<String>();
+    List<Integer> selectedPositions = new ArrayList<>();
+
     private Context ctx;
 
     public ImageAdapter(Context ctx, ArrayList<String> f) {
         this.ctx = ctx;
         this.f = f;
-        mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //mInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -47,20 +50,8 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = mInflater.inflate(
-                    R.layout.galleryitem, null);
-            holder.imageview = (ImageView) convertView.findViewById(R.id.thumbImage);
-
-            convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-
+        CustomView customView = (convertView == null) ?
+                new CustomView(ctx) : (CustomView) convertView;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inDither = false;
         options.inJustDecodeBounds = false;
@@ -74,13 +65,7 @@ public class ImageAdapter extends BaseAdapter {
         }else{
             myBitmap = BitmapFactory.decodeFile(f.get(position), options);
         }
-          holder.imageview.setImageBitmap(myBitmap);
-        //holder.imageview.setImageBitmap(myBitmap);
-        return convertView;
+        customView.display(myBitmap, selectedPositions.contains(position));
+        return customView;
     }
-}
-class ViewHolder {
-    ImageView imageview;
-
-
 }

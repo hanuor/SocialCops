@@ -66,7 +66,7 @@ public class Frag2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.frag2_fragmet,container,false);
+        final View v=inflater.inflate(R.layout.frag2_fragmet,container,false);
         stickyEvent = EventBus.getDefault().getStickyEvent(InformationHandler.class);
         if(stickyEvent != null) {
             username = stickyEvent.getKEYID();
@@ -77,7 +77,7 @@ public class Frag2 extends Fragment {
         //Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/dejavu.ttf");
         //toolbarT.setTypeface(myTypeface);
         imageDir = new File(Environment.getExternalStorageDirectory().toString()+
-                "/socialCopsDemo");
+                "/socialCopsDemo/");
         mediaFiles = imageDir.listFiles();
         for (int i = 0; i < mediaFiles.length; i++)
         {
@@ -96,6 +96,15 @@ public class Frag2 extends Fragment {
                 public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                         long arg3) {
                     Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
+
+                    int selectedIndex = adapter.selectedPositions.indexOf(position);
+                    if (selectedIndex > -1) {
+                        adapter.selectedPositions.remove(selectedIndex);
+                        ((CustomView)arg1).display(false);
+                    } else {
+                        adapter.selectedPositions.add(selectedIndex);
+                        ((CustomView)arg1).display(true);
+                    }
                 }
             });
         }//if
