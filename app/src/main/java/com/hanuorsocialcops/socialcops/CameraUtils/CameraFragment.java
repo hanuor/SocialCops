@@ -2,6 +2,7 @@ package com.hanuorsocialcops.socialcops.CameraUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -28,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
@@ -47,7 +49,7 @@ import static android.view.View.GONE;
  */
 
 public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
-     Camera camera;
+     Camera camera = null;
     SurfaceView surfaceView;
     RelativeLayout afterClick;
     SurfaceHolder surfaceHolder;
@@ -63,8 +65,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag1_fragemet,container,false);
-       // final FloatingActionButton buttonStartCameraPreview = (FloatingActionButton) v.findViewById(R.id.startcamerapreview);
-        //final FloatingActionButton videoRecorder = (FloatingActionButton) v.findViewById(R.id.videoRecord);
         final FloatingActionButton captureImage = (FloatingActionButton) v.findViewById(R.id.captureImage);
         final FloatingActionButton captureVideo = (FloatingActionButton) v.findViewById(R.id.captureVideo);
         getActivity().getWindow().setFormat(PixelFormat.UNKNOWN);
@@ -79,7 +79,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         Glide.with(this).load(R.drawable.giphy).into(imageViewTarget);
         recording = false;
         mediaRecorder = new MediaRecorder();
-        mediaRecoderSettings();
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -115,7 +114,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                 captureImage.setVisibility(View.VISIBLE);
 
                 if(!previewing){
-                    camera = Camera.open();
+
+                    try {
+                        releaseCameraAndPreview();
+                       camera = Camera.open();
+                    } catch (Exception e) {
+                        Log.e(getString(R.string.app_name), "failed to open Camera");
+                        e.printStackTrace();
+                    }
                     if (camera != null){
                         try {
                             camera.setDisplayOrientation(90);
@@ -147,7 +153,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         captureVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(recording){
+
                     mediaRecorder.stop();
                     mediaRecorder.release();
                     Log.d("transition","stop");
@@ -167,6 +175,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                     }, 1200);
                     //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
                 }else{
+                    mediaRecoderSettings();
+
                     mediaRecorder.start();
                     recording = true;
                     Log.d("transition","start");
@@ -188,6 +198,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         return v;
     }
 
+    private void releaseCameraAndPreview() {
+      //  myCameraPreview.setCamera(null);
+        if (camera != null) {
+            camera.release();
+            camera = null;
+        }
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         prepareMediaRecorder();
@@ -202,10 +220,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
     private void SaveImage(Bitmap finalBitmap) {
-
+        Bitmap newBitmap = RotateBitmap(finalBitmap,90);
         String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/socialCopsDemo");
+        File myDir = new File(root + "/socialCopsDemo/");
         myDir.mkdirs();
         Random generator = new Random();
         int n = 10000;
@@ -215,7 +239,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         if (file.exists ()) file.delete ();
         try {
             FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
 
@@ -225,39 +249,67 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         final Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
         fadeIn.setDuration(2000);
+        camera.release();
         mainLayout.setAnimation(fadeIn);
         mainLayout.setVisibility(View.VISIBLE);
         afterClick.setVisibility(View.INVISIBLE);
     }
+    private void saveVideoThumbnail(Bitmap bmp, String root){
+        File myDir = new File(root);
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     private void mediaRecoderSettings(){
+        Log.d("insomania","1");
         Random generator = new Random();
         int n = 10000;
         String root = Environment.getExternalStorageDirectory().toString()+"/socialCopsDemo/";
         n = generator.nextInt(n);
         String fname = "Vid-"+ n;
-
-        camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        camera.setDisplayOrientation(90);
-        camera.unlock();
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setCamera(camera);
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
         CamcorderProfile camcorderProfile_HQ = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
         mediaRecorder.setProfile(camcorderProfile_HQ);
-        mediaRecorder.setOutputFile(root+fname+".mp4" );
-        Log.d("insom","6");
-                mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
-        Log.d("insom","7");
+         mediaRecorder.setOutputFile(root+fname+".mp4" );
+        mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(5000000); // Set max file size 5M
-        Log.d("insom","8");
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            Toast.makeText(getActivity(), "IllegalStateException called", Toast.LENGTH_LONG).show();
+
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Toast.makeText(getActivity(), "prepare() failed", Toast.LENGTH_LONG).show();
+
+        }
+
+
     }
 
     private void prepareMediaRecorder(){
         mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
         Log.d("insom","9");
         try {
-
+            Log.d("insomania","2");
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block

@@ -5,7 +5,7 @@
         barColorWhenSelected="#ffffff"/>
     <tab
         id="@+id/tab_nearby"
-        icon="@drawable/cloud"
+        icon="@drawable/cloudstorage"
         barColorWhenSelected="#6f4e37"
         />
     <tab
