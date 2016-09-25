@@ -1,5 +1,6 @@
 package com.hanuorsocialcops.socialcops;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -36,13 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     RelativeLayout accounnt_buttons;
     TextInputLayout til, tpl;
     Button login, signUp;
+    ProgressDialog pd;
     private static EventBus bus = EventBus.getDefault();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
                 , LoginActivity.this).build();
         setContentView(R.layout.loginscreen);
+        pd = new ProgressDialog(LoginActivity.this);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/dejavu.ttf");
         final TextView myTextView = (TextView)findViewById(R.id.tv);
         til = (TextInputLayout) findViewById(R.id.input_layout_username);
@@ -50,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         accounnt_buttons = (RelativeLayout) findViewById(R.id.account_buttons);
         login = (Button) findViewById(R.id.login);
         signUp = (Button) findViewById(R.id.signUp);
+        pd.setMessage("Hold up a moment please ...");
 
         myTextView.setTextSize(80);
         myTextView.setText("SocialCops");
@@ -70,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 bus.postSticky(new InformationHandler(user.getUsername()));
                 Intent newIn = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(newIn);
+                finish();
 
             }
         });
@@ -78,13 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-               /* Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
-                fadeOut.setStartOffset(1000);
-                fadeOut.setDuration(1000);
-               */
-                //myTextView.setAnimation(fadeOut);
-                //myTextView.setVisibility(View.GONE);
                 til.setVisibility(View.VISIBLE);
                 til.setAnimation(fadeIn);
 
@@ -93,10 +92,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 accounnt_buttons.setVisibility(View.VISIBLE);
                 accounnt_buttons.setAnimation(fadeIn);
-
-               // signUp.setVisibility(View.VISIBLE);
-                //signUp.setAnimation(fadeIn);
-                //signUp.setTextSize(30);
 
             }
         }, 2000);
@@ -108,85 +103,61 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tpl.getEditText().getText()!=null && til.getEditText().getText()!=null){
+                pd.show();
+                if(tpl.getEditText().getText().length()!=0 && til.getEditText().getText().length()!=0){
                     mKinveyClient.user().login(til.getEditText().getText().toString(), tpl.getEditText().getText().toString(), new KinveyUserCallback() {
                         @Override
                         public void onFailure(Throwable t) {
+                            pd.dismiss();
                             CharSequence text = "Wrong username or password.";
                             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
                         }
                         @Override
                         public void onSuccess(User u) {
-                            CharSequence text = "Welcome back," + u.getUsername() + ".";
+                            pd.dismiss();
+                            CharSequence text = "Welcome back " + u.getUsername();
                             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                            bus.postSticky(new InformationHandler(u.getUsername()));
+                            Intent newIn = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(newIn);
+                            finish();
                         }
                     });
+                }else{
+                    pd.dismiss();
+                    Toast.makeText(LoginActivity.this, "Please fill up the blanks above", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tpl.getEditText().getText()!=null && til.getEditText().getText()!=null){
+                pd.show();
+                if(tpl.getEditText().getText().length()!=0 && til.getEditText().getText().length()!=0){
                     mKinveyClient.user().create(til.getEditText().getText().toString(), tpl.getEditText().getText().toString(), new KinveyUserCallback() {
                         @Override
                         public void onSuccess(User user) {
+                          pd.dismiss();
                             CharSequence text = user.getUsername() + ", your account has been created.";
                             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-
+                            finish();
                         }
 
                         @Override
                         public void onFailure(Throwable throwable) {
+                            pd.dismiss();
                             CharSequence text = "Could not sign up.";
-                            Log.d("ham",""+throwable.getMessage());
-                            Toast.makeText(getApplicationContext(), text + " " + throwable.getMessage() , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), text , Toast.LENGTH_SHORT).show();
 
                         }
                     });
+                }else{
+                    pd.dismiss();
+                    Toast.makeText(LoginActivity.this, "Please fill up the blanks above", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
         });
-
-       /* mKinveyClient.user().retrieve(new KinveyUserCallback() {
-            @Override
-            public void onFailure(Throwable e) {
-                Log.d("han","ss1");
-                mKinveyClient.user().create("hanuor", "han11", new KinveyUserCallback() {
-                    @Override
-                    public void onSuccess(User user) {
-                        Log.d("han","ss2");
-                        Toast.makeText(MainActivity.this, "YEs", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.d("han","ss3");
-                    }
-                });
-
-            }
-            @Override
-            public void onSuccess(User user) {
-                mKinveyClient.user().login(new KinveyUserCallback() {
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Log.d("han","ss5");
-                        CharSequence text = "Login error.";
-                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onSuccess(User u) {
-                        Log.d("han","ss6");
-                        CharSequence text = "Welcome back!";
-                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        });
-
-*/
     }
 }

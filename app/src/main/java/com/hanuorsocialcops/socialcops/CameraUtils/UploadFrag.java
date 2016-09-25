@@ -5,8 +5,10 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -30,11 +32,15 @@ import java.util.ArrayList;
 public class UploadFrag extends AppCompatActivity {
     ArrayList<String> receivedStr;
     ArrayList<String> copyAdap;
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.uploadfrag);
+       toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         final Client mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
                 , UploadFrag.this).build();
 
@@ -87,6 +93,14 @@ public class UploadFrag extends AppCompatActivity {
         }
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
 }

@@ -1,5 +1,8 @@
 package com.hanuorsocialcops.socialcops.CameraUtils;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,6 +17,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,9 +65,20 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     boolean recording;
     LinearLayout mainLayout;
     RelativeLayout cameraRel,gify;
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View v=inflater.inflate(R.layout.frag1_fragemet,container,false);
         final FloatingActionButton captureImage = (FloatingActionButton) v.findViewById(R.id.captureImage);
         final FloatingActionButton captureVideo = (FloatingActionButton) v.findViewById(R.id.captureVideo);
@@ -153,34 +168,39 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         captureVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.RECORD_AUDIO};
 
-                if(recording){
+                if(!hasPermissions(getActivity(), PERMISSIONS)){
 
-                    mediaRecorder.stop();
-                    mediaRecorder.release();
-                    Log.d("transition","stop");
+                }else {
+                    if (recording) {
 
-                    final Animation fadeIn = new AlphaAnimation(0, 1);
-                    fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
-                    fadeIn.setDuration(2000);
-                    mainLayout.setAnimation(fadeIn);
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mainLayout.setVisibility(View.VISIBLE);
-                            afterClick.setVisibility(View.INVISIBLE);
+                        mediaRecorder.stop();
+                        mediaRecorder.release();
+                        Log.d("transition", "stop");
 
-                        }
-                    }, 1200);
-                    //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
-                }else{
-                    mediaRecoderSettings();
+                        final Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+                        fadeIn.setDuration(2000);
+                        mainLayout.setAnimation(fadeIn);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainLayout.setVisibility(View.VISIBLE);
+                                afterClick.setVisibility(View.INVISIBLE);
 
-                    mediaRecorder.start();
-                    recording = true;
-                    Log.d("transition","start");
+                            }
+                        }, 1000);
+                        //  buttonStartCameraPreview.setVisibility(View.VISIBLE);
+                    } else {
+                        mediaRecoderSettings();
 
+                        mediaRecorder.start();
+                        recording = true;
+                        Log.d("transition", "start");
+
+                    }
                 }
 
             }
@@ -188,7 +208,15 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         captureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                camera.takePicture(shutterCallback,rawCallback,jpegCallback);
+                int PERMISSION_ALL = 1;
+                String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.RECORD_AUDIO};
+
+                if(!hasPermissions(getActivity(), PERMISSIONS)){
+
+                }else{
+                    camera.takePicture(shutterCallback,rawCallback,jpegCallback);
+
+                }
 
 
             }
