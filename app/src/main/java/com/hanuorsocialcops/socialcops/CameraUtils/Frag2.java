@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -126,8 +128,10 @@ public class Frag2 extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Selected item/s are being uploaded...", Toast.LENGTH_SHORT).show();
 
-                //  Toast.makeText(getActivity(), ""+selectedS.get(0), Toast.LENGTH_SHORT).show();
-            }
+               Intent inn = new Intent(getActivity(), UploadFrag.class);
+                inn.putStringArrayListExtra("SelectedS", selectedS);
+                getActivity().startActivity(inn);
+                 }
         });
         return v;
     }

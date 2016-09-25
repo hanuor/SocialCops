@@ -14,6 +14,7 @@ import android.widget.Toast;
 //import com.hanuorsocialcops.socialcops.CameraUtils.CameraDetails;
 import com.hanuorsocialcops.socialcops.CameraUtils.CameraFragment;
 import com.hanuorsocialcops.socialcops.CameraUtils.Frag2;
+import com.hanuorsocialcops.socialcops.CameraUtils.UploadFrag;
 import com.hanuorsocialcops.socialcops.Credentials.CredentialManager;
 import com.kinvey.android.Client;
 import com.kinvey.android.callback.KinveyUserCallback;
@@ -51,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.contentContainer,frag1,"p");
                         fragmentTransaction.commit();
                         break;
-                    case R.id.tab_friends:
-                        break;
                     case R.id.tab_nearby:
                         Frag2 frag2=new Frag2();
                         FragmentManager fragmentManager1=getSupportFragmentManager();
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                             fragmentTransaction1.replace(R.id.contentContainer, frag2, "nearby");
                         fragmentTransaction1.commit();
                         break;
+
 
                     default:
                         CameraFragment frag3=new CameraFragment();

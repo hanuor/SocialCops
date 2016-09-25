@@ -8,9 +8,5 @@
         icon="@drawable/cloudstorage"
         barColorWhenSelected="#6f4e37"
         />
-    <tab
-        id="@+id/tab_friends"
-        icon="@drawable/cloud"
-        barColorWhenSelected="#BF360C"
-         />
+
 </tabs>
