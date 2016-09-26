@@ -1,22 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <!-- This could be your fragment container, or something -->
-    <FrameLayout
-        android:id="@+id/contentContainer"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/tool_bar"
+
+        layout="@layout/toolbar_layout"
+        ></include>
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar" >
-      </FrameLayout>
+        android:orientation="vertical"
+        android:id="@+id/mainLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/cameraRel"
+            android:layout_weight="1">
 
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+            <ImageView
+                android:layout_width="match_parent"
+                android:background="@drawable/sunset"
+                android:layout_height="match_parent"
+
+                android:id="@+id/imageP"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#cceeeeee"
+                android:layout_centerInParent="true"
+                android:text="Snap a shot"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gify"
+            android:clickable="true"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="#212121"
+                android:id="@+id/gifvideo"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#cceeeeee"
+                android:layout_centerInParent="true"
+                android:text="Snap a video"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        app:bb_tabXmlResource="@xml/bottombar_tabs" />
+        android:visibility="invisible"
+        android:id="@+id/afterClick"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/cam"
+            android:visibility="invisible"
+            android:layout_margin="7dp"
+            android:id="@+id/captureImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/vid"
+            android:visibility="invisible"
+            android:layout_margin="7dp"
+            android:id="@+id/captureVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
-</RelativeLayout>
+
+        <SurfaceView
+            android:id="@+id/surfaceview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+</FrameLayout>

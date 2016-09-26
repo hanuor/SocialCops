@@ -1,6 +1,7 @@
 package com.hanuorsocialcops.socialcops.CameraUtils;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,6 +26,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -65,21 +68,58 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
     boolean recording;
     LinearLayout mainLayout;
     RelativeLayout cameraRel,gify;
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
+    private boolean checkWriteExternalPermission()
+    { boolean counter = true;
+        String permission1 = "android.permission.WRITE_EXTERNAL_STORAGE";
+        String permission2 = "android.permission.CAMERA";
+
+        String permission3 = "android.permission.READ_EXTERNAL_STORAGE";
+
+        String permission5 = "android.permission.RECORD_AUDIO";
+        int res = getContext().checkCallingOrSelfPermission(permission1);
+
+        int res2 = getContext().checkCallingOrSelfPermission(permission2);
+        int res3 = getContext().checkCallingOrSelfPermission(permission3);
+
+        int res5 = getContext().checkCallingOrSelfPermission(permission5);
+        if(res == PackageManager.PERMISSION_GRANTED && res2 == PackageManager.PERMISSION_GRANTED &&
+                res3 == PackageManager.PERMISSION_GRANTED
+                && res5 == PackageManager.PERMISSION_GRANTED){
+
+        }else{
+            counter = false;
         }
-        return true;
+        return counter;
+    }
+
+    public static void setTranslucentStatusBar(Window window) {
+        if (window == null) return;
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt >= Build.VERSION_CODES.LOLLIPOP) {
+            setTranslucentStatusBarLollipop(window);
+        } else if (sdkInt >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatusBarKiKat(window);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static void setTranslucentStatusBarLollipop(Window window) {
+        window.setStatusBarColor(
+                window.getContext()
+                        .getResources()
+                        .getColor(R.color.coffeeDark));
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private static void setTranslucentStatusBarKiKat(Window window) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v=inflater.inflate(R.layout.frag1_fragemet,container,false);
+        setTranslucentStatusBar(getActivity().getWindow());
         final FloatingActionButton captureImage = (FloatingActionButton) v.findViewById(R.id.captureImage);
         final FloatingActionButton captureVideo = (FloatingActionButton) v.findViewById(R.id.captureVideo);
         getActivity().getWindow().setFormat(PixelFormat.UNKNOWN);
@@ -168,11 +208,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
         captureVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.RECORD_AUDIO};
-
-                if(!hasPermissions(getActivity(), PERMISSIONS)){
-
-                }else {
+                if(checkWriteExternalPermission()){
                     if (recording) {
 
                         mediaRecorder.stop();
@@ -201,21 +237,21 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback {
                         Log.d("transition", "start");
 
                     }
+                }else{
+                    Toast.makeText(getActivity(), "Please grant the necessary permissions", Toast.LENGTH_SHORT).show();
                 }
+
+
 
             }
         });
         captureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int PERMISSION_ALL = 1;
-                String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.RECORD_AUDIO};
-
-                if(!hasPermissions(getActivity(), PERMISSIONS)){
-
-                }else{
+                if(checkWriteExternalPermission()){
                     camera.takePicture(shutterCallback,rawCallback,jpegCallback);
-
+                }else{
+                    Toast.makeText(getActivity(), "Please grant the necessary permissions", Toast.LENGTH_SHORT).show();
                 }
 
 

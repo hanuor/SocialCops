@@ -15,8 +15,7 @@ import com.hanuorsocialcops.socialcops.R;
 /**
  * Created by Shantanu Johri on 9/24/2016.
  */
-
-    class CustomView extends FrameLayout {
+ class CustomView extends FrameLayout {
 
         ImageView textView;
 
@@ -33,6 +32,6 @@ import com.hanuorsocialcops.socialcops.R;
         }
 
         public void display(boolean isSelected) {
-            textView.setBackgroundColor(isSelected? Color.LTGRAY : Color.WHITE);
+            textView.setBackgroundColor(isSelected? Color.parseColor("#eeeeee") : Color.parseColor("#212121"));
         }
     }

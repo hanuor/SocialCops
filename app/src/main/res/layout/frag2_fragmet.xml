@@ -3,16 +3,36 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tooolbar"
+        android:background="#212121"
+        android:elevation="4dp"
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/toolbar_layout"
-        ></include>
+        >
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gallery"
+
+                android:fontFamily="sans-serif-condensed"
+                android:id="@+id/toolbarText"
+                android:layout_centerVertical="true"
+                android:textColor="#ffffff"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
        <GridView
-        android:layout_below="@+id/tool_bar"
+        android:layout_below="@+id/tooolbar"
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+           android:background="#212121"
         android:numColumns="3"
         android:scrollbars="none"  />
     <android.support.design.widget.FloatingActionButton

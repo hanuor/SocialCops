@@ -2,11 +2,11 @@
     <tab
         id="@+id/tab_favorites"
         icon="@drawable/cam"
-        barColorWhenSelected="#89796a"/>
+        barColorWhenSelected="#ffffff"/>
     <tab
         id="@+id/tab_nearby"
         icon="@drawable/gallery"
-        barColorWhenSelected="#dfd9d4"
+        barColorWhenSelected="#00BCD4"
         />
 
 </tabs>

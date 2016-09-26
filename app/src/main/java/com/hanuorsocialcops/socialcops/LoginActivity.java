@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         mKinveyClient = new Client.Builder(CredentialManager.appID(), CredentialManager.appSecret()
                 , LoginActivity.this).build();
         setContentView(R.layout.loginscreen);
+        setTheme(R.style.MainActivityTheme);
         pd = new ProgressDialog(LoginActivity.this);
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/dejavu.ttf");
         final TextView myTextView = (TextView)findViewById(R.id.tv);
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         myTextView.setTextSize(80);
         myTextView.setText("SocialCops");
+        myTextView.setTextColor(Color.parseColor("#ffffff"));
         myTextView.setTypeface(myTypeface);
         final Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
