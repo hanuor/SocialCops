@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity  implements SurfaceHolder.Ca
         if (id == R.id.action_gallery) {
             Intent hik = new Intent(MainActivity.this, Frag2.class);
             startActivity(hik);
-
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

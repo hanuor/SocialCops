@@ -26,6 +26,7 @@
             android:visibility="invisible"
             android:layout_marginTop="30dp"
             android:textColorHint="#e0e0e0"
+
             android:layout_below="@+id/lineofseperation"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content">
@@ -37,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=" Username "
+                android:textColor="#ffffff"
                 android:textColorHint="#e0e0e0"
                 android:layout_below="@+id/tv"/>
         </android.support.design.widget.TextInputLayout>
@@ -53,6 +55,8 @@
             <EditText
                 android:id="@+id/input_password"
                 android:textColorHint="#e0e0e0"
+
+                android:textColor="#ffffff"
                 android:layout_centerHorizontal="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

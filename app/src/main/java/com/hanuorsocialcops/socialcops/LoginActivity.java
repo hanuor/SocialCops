@@ -140,8 +140,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(User user) {
                           pd.dismiss();
-                            CharSequence text = user.getUsername() + ", your account has been created.";
-                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                            bus.postSticky(new InformationHandler(user.getUsername()));
+                            Intent newIn = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(newIn);
                             finish();
                         }
 

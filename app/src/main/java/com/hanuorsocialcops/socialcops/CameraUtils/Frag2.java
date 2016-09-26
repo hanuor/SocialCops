@@ -174,6 +174,7 @@ public class Frag2 extends AppCompatActivity {
                 Intent inn = new Intent(Frag2.this, UploadFrag.class);
                 inn.putStringArrayListExtra("SelectedS", selectedS);
                 Frag2.this.startActivity(inn);
+                finish();
             }
         });
 
